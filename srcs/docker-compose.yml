@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  mariadb:
+    image: mariadb
+    env_file: .env
+    build:
+      context: ./requirements/mariadb
+      args:
+        DB_DB: ${DB_DB}
+        DB_USER: ${DB_USER}
+        DB_PASS: ${DB_PASS}
+    container_name: mariadb
+    restart: unless-stopped
+    volumes:
+      - mariadb:/var/lib/mysql
+    networks:
+      - inception
+
+  nginx:
+    image: nginx
+    build:
+      context: ./requirements/nginx
+    container_name: nginx
+    restart: unless-stopped
+    volumes:
+      - wordpress:/var/www/wordpress
+    networks:
+      - inception
+    ports:
+      - "443:443"
+    depends_on:
+      wordpress:
+        condition: service_healthy
+
+  wordpress:
+    image: wordpress
+    env_file: .env
+    build:
+      context: ./requirements/wordpress
+    container_name: wordpress
+    restart: unless-stopped
+    volumes:
+      - wordpress:/var/www/wordpress
+    networks:
+      - inception
+    depends_on:
+      mariadb:
+        condition: service_healthy
+
+networks:
+  inception:
+    driver: bridge
+
+volumes:
+  mariadb:
+    type: none
+    driver_opts:
+      device: /home/ilkridah/data/mariadb
+      o: bind
+  wordpress:
+    type: none
+    driver_opts:
+      device: /home/ilkridah/data/wordpress
+      o: bind
