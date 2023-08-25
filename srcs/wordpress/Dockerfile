@@ -1,4 +1,4 @@
-FROM debian:bullseye
+FROM debian:buster
 
 # Set up port forwarding
 EXPOSE 9000

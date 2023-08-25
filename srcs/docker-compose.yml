@@ -1,17 +1,17 @@
-version: '3.8'
+version: '3'
 
 services:
   mariadb:
     image: mariadb
     env_file: .env
     build:
-      context: ./requirements/mariadb
+      context: ./mariadb
       args:
         DB_DB: ${DB_DB}
         DB_USER: ${DB_USER}
         DB_PASS: ${DB_PASS}
     container_name: mariadb
-    restart: unless-stopped
+    restart: on-failure
     volumes:
       - mariadb:/var/lib/mysql
     networks:
@@ -19,10 +19,9 @@ services:
 
   nginx:
     image: nginx
-    build:
-      context: ./requirements/nginx
+    build: ./nginx
     container_name: nginx
-    restart: unless-stopped
+    restart: on-failure
     volumes:
       - wordpress:/var/www/wordpress
     networks:
@@ -31,22 +30,21 @@ services:
       - "443:443"
     depends_on:
       wordpress:
-        condition: service_healthy
+        condition: service_started
 
   wordpress:
     image: wordpress
     env_file: .env
-    build:
-      context: ./requirements/wordpress
+    build: ./wordpress
     container_name: wordpress
-    restart: unless-stopped
+    restart: on-failure
     volumes:
       - wordpress:/var/www/wordpress
     networks:
       - inception
     depends_on:
       mariadb:
-        condition: service_healthy
+        condition: service_started
 
 networks:
   inception:
@@ -54,12 +52,12 @@ networks:
 
 volumes:
   mariadb:
-    type: none
     driver_opts:
-      device: /home/ilkridah/data/mariadb
+      type: none
+      device: /home/elias/data/mariadb
       o: bind
   wordpress:
-    type: none
     driver_opts:
-      device: /home/ilkridah/data/wordpress
+      type: none
+      device: /home/elias/data/wordpress
       o: bind

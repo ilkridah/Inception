@@ -1,8 +1,11 @@
-SRCS = srcs/docker-compose.yml
+SRCS	=	srcs/docker-compose.yml
+
+all:	up
 
 up:
-	docker-compose -f $(SRCS) up -d
-
+	mkdir -p /home/elias/data/mariadb
+	mkdir -p /home/elias/data/wordpress
+	docker-compose -f $(SRCS) up --build -d
 down:
 	docker-compose -f $(SRCS) down
 
@@ -11,11 +14,13 @@ ps:
 
 top:
 	docker-compose -f $(SRCS) top
-
 clean:
-	docker-compose -f $(SRCS) down --volumes --remove-orphans
+	docker-compose -f $(SRCS) down --rmi all -v
+fclean:
+	docker-compose -f $(SRCS) down --rmi all -v
+	rm -rf /home/elias/data/
 
-prune: clean
+prune:	fclean
 	docker system prune -f --all --volumes
 
-.PHONY: up down ps top clean prune
+.PHONY:	all up down ps top clean fclean prune
