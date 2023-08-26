@@ -1,12 +1,12 @@
-FROM debian:buster
+FROM debian:bullseye
 EXPOSE 443
 
-RUN apt-get update
-RUN apt-get upgrade -y
-RUN apt-get -y install nginx
-RUN apt-get -y install openssl
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get -y install nginx && \
+    apt-get -y install openssl
 
-RUN openssl req -x509 -nodes -days 365 -subj "/C=FR/ST=France/L=Lyon/O=42/OU=42/CN=elias" -newkey rsa:4096 -keyout /etc/ssl/nginx-selfsigned.key -out /etc/ssl/nginx-selfsigned.crt;
+RUN openssl req -x509 -nodes -days 365 -subj "/CN=ilkridah" -newkey rsa:4096 -keyout /etc/ssl/nginx-selfsigned.key -out /etc/ssl/nginx-selfsigned.crt;
 COPY ./conf/default etc/nginx/sites-enabled/default
 
 CMD ["nginx", "-g", "daemon off;"]

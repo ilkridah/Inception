@@ -54,10 +54,10 @@ volumes:
   mariadb:
     driver_opts:
       type: none
-      device: /home/elias/data/mariadb
+      device: /Users/ilkridah/Desktop/Inception/data/mariadb
       o: bind
   wordpress:
     driver_opts:
       type: none
-      device: /home/elias/data/wordpress
+      device: /Users/ilkridah/Desktop/Inception/data/wordpress
       o: bind
