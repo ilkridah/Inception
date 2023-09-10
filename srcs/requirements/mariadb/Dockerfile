@@ -7,7 +7,7 @@ ARG DB_PASS
 
 RUN apt-get update && \
     apt-get upgrade -y && \
-    apt-get -y --no-install-recommends install mariadb-server && \
+    apt-get -y --no-install-recommends install mariadb-server 
 
 
 COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/
