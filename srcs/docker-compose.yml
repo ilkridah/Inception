@@ -2,12 +2,12 @@ version: '3'
 
 services:
   mariadb:
-    image: mariadb
+    image: mariadb:ilkridah
     env_file: .env
     build:
-      context: ./mariadb
+      context: ./requirements/mariadb
       args:
-        DB_DB: ${DB_DB}
+        D_B: ${D_B}
         DB_USER: ${DB_USER}
         DB_PASS: ${DB_PASS}
     container_name: mariadb
@@ -18,8 +18,8 @@ services:
       - inception
 
   nginx:
-    image: nginx
-    build: ./nginx
+    image: nginx:ilkridah
+    build: ./requirements/nginx
     container_name: nginx
     restart: on-failure
     volumes:
@@ -33,9 +33,9 @@ services:
         condition: service_started
 
   wordpress:
-    image: wordpress
+    image: wordpress:ilkridah
     env_file: .env
-    build: ./wordpress
+    build: ./requirements/wordpress
     container_name: wordpress
     restart: on-failure
     volumes:
