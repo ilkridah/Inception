@@ -1,13 +1,27 @@
-### Project Summary
+# Project Overview
 
-**Multi-Container Infrastructure Setup using Docker and Docker Compose**
+This project sets up a multi-container infrastructure using Docker and Docker Compose within a virtual machine. 
+The aim is to create a reliable environment composed of various services while adhering to specific guidelines.
 
-- Developed a robust multi-container architecture within a virtual machine to host various services.
-- Created custom Dockerfiles for each service, ensuring images were built locally without using pre-built images (except for Alpine and Debian).
-- Configured essential services, including NGINX (with TLSv1.2 or TLSv1.3), WordPress with PHP-FPM, and MariaDB, managing their interactions through a dedicated Docker network.
-- Implemented persistent storage using Docker volumes for the WordPress database and website files.
-- Established automatic restart policies for containers to ensure high availability and resilience.
-- Configured a custom domain to point to the local IP address, enhancing accessibility.
-- Prioritized best practices in Docker container management, focusing on security, isolation, and performance.
+## Key Features
 
-This project demonstrates strong skills in containerization, infrastructure management, and adherence to best practices in software development.
+- **Service Isolation**: Each service runs in its own dedicated container, with Docker images named after the services.
+- **Custom Dockerfiles**: Each service has a custom Dockerfile, and images are built locally without relying on pre-built images (excluding Alpine and Debian).
+- **Required Services**:
+  - **NGINX**: Configured to use only TLSv1.2 or TLSv1.3.
+  - **WordPress + PHP-FPM**: Installed and configured without NGINX.
+  - **MariaDB**: Operates independently without NGINX.
+- **Persistent Storage**:
+  - A volume for the WordPress database.
+  - A separate volume for WordPress website files.
+- **Networking**: A dedicated Docker network connects all containers, ensuring no use of host networking or links.
+- **Container Management**: Containers are set to restart automatically in case of failure, avoiding hacky solutions like infinite loops.
+- **Database Setup**: Two users in the WordPress database, with the administrator's username free from common admin terms.
+- **Volume Accessibility**: Volumes are accessible at `/home/login/data` on the host machine.
+- **Domain Configuration**: Custom domain (e.g., `login.42.fr`) points to your local IP address.
+
+## Getting Started
+
+1. Clone the repository.
+2. Configure your virtual machine.
+3. Build and run the services using Docker Compose.
